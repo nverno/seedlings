@@ -1,0 +1,12 @@
+*~
+.*~
+.#*
+.V8history
+.Rhistory
+docs
+seedsub
+seedsub.mas
+temp
+scratch.R
+*.o
+*.exe

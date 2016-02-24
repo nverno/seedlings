@@ -1,0 +1,9 @@
+Package: seedlings
+Title: seedlings!
+Version: 0.0.0.9000
+Authors@R: "Noah Peart <noah.v.peart@gmail.com> [aut,cre]"
+Description: Everything imaginable.
+Depends: R (>= 3.2.3)
+License: WTFPL
+LazyData: true
+Imports: data.table
