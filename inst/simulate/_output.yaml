@@ -1,0 +1,10 @@
+html_document:
+  self_contained: false
+  lib_dir: libs
+  css: includes/css/styles.css
+  theme: readable
+  highlight: zenburn
+  code_folding: hide
+  includes:
+    in_header: includes/_navbar.html
+

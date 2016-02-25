@@ -1,0 +1,6 @@
+*.html
+distr_files
+libs
+
+!includes/_navbar.html
+
