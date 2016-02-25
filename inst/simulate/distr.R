@@ -3,7 +3,7 @@
 ##' Description: look at the distribution of coverage/counts
 ##' Author: Noah Peart
 ##' Created: Wed Feb 24 17:29:06 2016 (-0500)
-##' Last-Updated: Wed Feb 24 20:17:53 2016 (-0500)
+##' Last-Updated: Thu Feb 25 17:36:06 2016 (-0500)
 ##'           By: Noah Peart
 ## */
 
@@ -72,3 +72,72 @@ sds <- sds[mults[YEAR == 1999,], on=c("CONTNAM", "STPACE")][, YEAR := NULL][]
 setnames(sds, "N", "Count")
 datatable(sds)
 ## /* end cover-deviation */
+##' 
+##' # Similarity Measures
+##' 
+##' Only looking at 1999 data for plots with multiple measurements for now.
+##' 
+##' ### Euclidean
+##' 
+##' Cluster by euclidean distance between 
+{{prettify(grnd)}}
+##' values.
+##---- euclidean ----------------------------------------
+## dd <- data.matrix(dat[, grnd, with=FALSE])
+
+## kmeans(dist(dd), 10)
+## plot(hclust(dist(dd)))
+
+## /* end euclidean */
+##' 
+##' # Conditional Inference Tree
+##' 
+##' Some results of models of the form `[MSSG, LITC, LITM, LITD] ~ .`, where 
+##' the response variable is a vector of the substrate values and the covariates
+##' used below are aspect, elevation and contour (using plot was taking too long).
+##' 
+##' Some references discussing the model (the `party` paper has a lot of details):
+##' 
+##'   + [partykit](https://cran.r-project.org/web/packages/partykit/partykit.pdf) 
+##'   + [party](https://cran.r-project.org/web/packages/party/vignettes/party.pdf)
+##'   + [cv discussion](http://stats.stackexchange.com/questions/12140/conditional-inference-trees-vs-traditional-decision-trees)
+##' 
+##---- ctree ----------------------------------------
+dtree <- dat[, c("PID", "CONTNAM", "ASPCL", "ELEVCL", grnd), with=FALSE]
+dtree[, PID := factor(PID)]
+dtree[, CONTNAM := factor(CONTNAM)]
+dtree[, ASPCL := factor(ASPCL)]
+dtree[, ELEVCL := factor(ELEVCL, levels=c("L", "M", "H"), ordered=TRUE)]
+
+## A few models over the main categorical variables
+library(partykit)
+res <- ctree(MSSG + LITC + LITD + LITM ~ CONTNAM + ASPCL + ELEVCL, data=dtree)
+print(res)
+plot(res)
+
+res2 <- ctree(MSSG + LITC + LITD + LITM ~ ASPCL + ELEVCL, data=dtree)
+print(res2)
+plot(res2)
+
+res3 <- ctree(MSSG + LITC + LITD + LITM ~ CONTNAM, data=dtree)
+print(res3)
+plot(res3)
+
+## Too slow, too many splits
+## res4 <- ctree(MSSG + LITC + LITD + LITM ~ PID, data=dtree)
+
+## /* end ctree */
+##' 
+##' # Hierarchical Clustering
+##' 
+##' Simple hierarchical clustering after computing a distance matrix.  Here I use just use
+##' euclidean distance to compute the distance between samples.
+##' 
+##---- hclust ----------------------------------------
+dd <- data.matrix(dtree[, grnd, with=FALSE])
+ddist <- dist(dd)
+
+library(d3heatmap)
+d3heatmap(dd)
+
+## /* end hclust */
