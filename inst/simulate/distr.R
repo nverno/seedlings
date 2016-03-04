@@ -3,7 +3,7 @@
 ##' Description: look at the distribution of coverage/counts
 ##' Author: Noah Peart
 ##' Created: Wed Feb 24 17:29:06 2016 (-0500)
-##' Last-Updated: Thu Feb 25 17:36:06 2016 (-0500)
+##' Last-Updated: Thu Mar  3 22:44:48 2016 (-0500)
 ##'           By: Noah Peart
 ## */
 
@@ -139,5 +139,6 @@ ddist <- dist(dd)
 
 library(d3heatmap)
 d3heatmap(dd)
+## test
 
 ## /* end hclust */
