@@ -3,23 +3,10 @@
 ## Description: 
 ## Author: Noah Peart
 ## Created: Tue Mar  8 19:47:43 2016 (-0500)
-## Last-Updated: Tue Mar  8 22:52:55 2016 (-0500)
+## Last-Updated: Wed Mar  9 16:41:08 2016 (-0500)
 ##           By: Noah Peart
 ######################################################################
 ## Prefix: 'sub'
-
-## Ground and aerial substrates
-ground <- c("BLA5", "BLD5", "BSOIL", "RCK", "WATER", "WDG1", "WDG5", "MSSG", "LITT", "LITC",
-  "LITD", "LITM", "TIPA", "STPA", "LITCRCK", "LITMRCK", "MSRCK", "MSBLA5", "MSWDG5")
-aerial <- c("WDA1", "WDA5", "MSWDA1", "MSWDA5")
-
-## Add a summed ground cover column
-subs[, GSUM := rowSums(.SD, na.rm=TRUE), .SDcols = ground]
-subs[YEAR %in% c(1999, 2003), GSUM := GSUM - LITT]  # remove LITT if LITC, LITD, LITM
-
-## Coverage percentages for ground substrates
-cover <- subs[, lapply(.SD, function(x) x/subs[["GSUM"]]), .SDcols = ground]
-cover <- cbind(subs[, .(PID, CONTNAM, STPACE, YEAR, QPOS, ASPCL, ELEVCL)], cover)
 
 ## Barplot of percent covers, grouped by sample, split by substrate type
 ## Data selection:
@@ -66,8 +53,6 @@ output$subBar <- plotly::renderPlotly({
 ##                                 Observers
 ##
 ################################################################################
-subPlots <- unique(subs[,.(CONTNAM, STPACE, YEAR, ASPCL, ELEVCL)])
-
 observeEvent(input$subReset, {
   updateSelectInput(session, "subYear", selected="All")
   updateSelectInput(session, "subCont", selected="All")

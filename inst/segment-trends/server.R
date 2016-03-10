@@ -3,7 +3,7 @@
 ## Description: 
 ## Author: Noah Peart
 ## Created: Tue Mar  8 19:11:19 2016 (-0500)
-## Last-Updated: Tue Mar  8 20:42:13 2016 (-0500)
+## Last-Updated: Wed Mar  9 19:11:24 2016 (-0500)
 ##           By: Noah Peart
 ######################################################################
 shinyServer(function(input, output, session) {
@@ -13,6 +13,7 @@ shinyServer(function(input, output, session) {
     ## 'menu',                           # dropdown menu
     ## 'search',                         # search controls
     "data",                              # data importing
+    "basal-vs-seeds",                    # basal area/seedling counts
     "substrates",                        # substrates
     "debug"                              # add a debugging panel
   )

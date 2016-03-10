@@ -3,7 +3,7 @@
 ## Description: 
 ## Author: Noah Peart
 ## Created: Tue Mar  8 20:36:58 2016 (-0500)
-## Last-Updated: Tue Mar  8 22:52:22 2016 (-0500)
+## Last-Updated: Wed Mar  9 15:59:27 2016 (-0500)
 ##           By: Noah Peart
 ######################################################################
 ## Prefix: "sub"
@@ -15,12 +15,14 @@ subDataUI <- tagList(
   selectInput("subYear", "Year", c("All", subs[,unique(YEAR)])),
   selectInput("subAsp", "Aspect", c("All", subs[,unique(ASPCL)])),
   selectInput("subElev", "Elev", c("All", subs[,unique(ELEVCL)])),
-  br(),
+  hr(),
   selectInput("subCont", "Contour", c("All", subs[,unique(CONTNAM)])),
   selectInput("subPace", "Pace", c("All", subs[,unique(STPACE)])),
   fluidRow(
-    column(6, actionButton("subReset", "Reset")),
-    column(6, actionButton("subDat", "Submit"))
+    column(12, 
+      div(class="btn-group", role="group",
+        actionButton("subReset", "Reset", class="btn-warning"),
+        actionButton("subDat", "Submit", class="btn-primary")))
   )
 )
 
