@@ -3,7 +3,7 @@
 ## Description: some global data prep
 ## Author: Noah Peart
 ## Created: Wed Mar  9 16:38:35 2016 (-0500)
-## Last-Updated: Wed Mar  9 19:17:41 2016 (-0500)
+## Last-Updated: Sat Mar 12 00:45:28 2016 (-0500)
 ##           By: Noah Peart
 ######################################################################
 pid <- c("CONTNAM", "STPACE")
@@ -46,8 +46,32 @@ prismTotal <- prism[,.(BA=sum(CTP)), by=c(pid, consts, "YEAR")]
 ##
 ################################################################################
 ## Prefix: "seed"
+
+## Normalize counts using 'SDSP' and 'DSDSP' columns
+## Notes: 
+## - Missing SGLEN for ME2020 pace 900, but no SDSP[1-2] in this plot
+unique(seeds[YEAR==1989 & !is.na(HT) & is.na(SGLEN), ])
+sglens <- unique(seeds[!is.na(SGLEN), .(CONTNAM, STPACE)])
+unique(seeds[,.(CONTNAM, STPACE)])[!sglens, on=names(sglens)]
+
+unique(seeds[!is.na(SDSP1) & YEAR == 1999 & is.na(SGLEN), ])
+  .(CONTNAM, STPACE, SDSP1, SGDSP)])
+
+seed_counts <- function(size, data=seeds) {
+  ## unnormalized counts
+  data[STAT == "ALIVE" & HT < size, TMP := .N, by=c(pid, consts, "SPEC", "YEAR")]
+  data[, SGLEN1 := unique(na.omit(SGLEN)), by=c(pid, consts, "YEAR")]
+  data[!is.na(TMP) & SPEC == SDSP1 & is.na(SGLEN), ]
+}
 seedSpec <- seeds[STAT=="ALIVE" & HT < 100, .(COUNT=.N), by=c(pid, consts, "SPEC", "YEAR")]
 seedPlots <- unique(seeds[YEAR == 1999,.(CONTNAM, STPACE)])
+
+data[, tst := length(na.omit(unique(SGLEN))), by=c(pid, "YEAR")][tst > 1]
+nrow(data[tst<1])
+
+data[, tst := length(na.omit(unique(SGLEN))), by=c(pid)]
+
+
 
 ################################################################################
 ##
